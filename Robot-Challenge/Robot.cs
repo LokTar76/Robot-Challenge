@@ -18,26 +18,23 @@ namespace Robot_Challenge
         private int _id { get; set; }
         private int _xPosition { get; set; }
         private int _yPosition { get; set; }
-        private Direction _facing { get; set; }
+        private Direction _direction { get; set; }
         private bool _isActive { get; set; }
-
-        public static int TotalRobot = 0;      // A counter to store how many robots have been placed
-
         
         #region Constructor
         /// <summary>
-        /// Constructor that takes no arguments
+        /// Default constructor
         /// </summary>
         public Robot()
         {
             _xPosition = 0;
             _yPosition = 0;
-            _facing = 0;
+            _direction = 0;
             _id = -1;
             _isActive = false;
         }
         /// <summary>
-        /// Constructor that takes 5 arguments
+        /// Constructor
         /// </summary>
         /// <param name="xPosition"></param>
         /// <param name="yPosition"></param>
@@ -48,46 +45,42 @@ namespace Robot_Challenge
         {
             _xPosition = xPosition;
             _yPosition = yPosition;
-            SetDirection(direction);
+            ConvertDirection(direction);
             _id = robotId;
             _isActive = isActive;
         }
         #endregion
-        // Convert input direction from string to enum
-
-        #region Set methods
 
         /// <summary>
-        /// Set the robot direction according to input
+        /// Convert direction from string to enum Direction.
         /// </summary>
         /// <param name="direction"></param>
-        private void SetDirection(string direction)
+        private void ConvertDirection(string direction)
         {
             switch (direction)
             {
                 case "NORTH":
-                    _facing = Direction.North;
+                    _direction = Direction.North;
                     break;
                 case "EAST":
-                    _facing = Direction.East;
+                    _direction = Direction.East;
                     break;
                 case "SOUTH":
-                    _facing = Direction.South;
+                    _direction = Direction.South;
                     break;
                 case "WEST":
-                    _facing = Direction.West;
+                    _direction = Direction.West;
                     break;
             }
         }
 
+        #region Set methods
         /// <summary>
-        /// Check whether the movement is validate.
+        /// Set robot movement
         /// </summary>
-        /// <returns></returns>
-       
         public void SetMovement()
         {
-            switch (_facing)
+            switch (_direction)
             {
                 case Direction.North:
                     _yPosition++;
@@ -112,7 +105,7 @@ namespace Robot_Challenge
         /// <param name="direction"></param>
         public void SetRotation(string direction)
         {
-            _facing = direction == "LEFT" ? (Direction)(((int)_facing + 3) % 4) : (Direction)(((int)_facing + 1) % 4);
+            _direction = direction == "LEFT" ? (Direction)(((int)_direction + 3) % 4) : (Direction)(((int)_direction + 1) % 4);
         }
 
         /// <summary>
@@ -133,20 +126,20 @@ namespace Robot_Challenge
         #endregion
 
         #region Get Methods
-        public int GetRobotXPos()
+        public int GetXPos()
         {
             return _xPosition;
         }
-        public int GetRobotYPos()
+        public int GetYPos()
         {
             return _yPosition;
         }
 
-        public int GetRobotDirection()
+        public int GetDirection()
         {
-            return (int)_facing;
+            return (int)_direction;
         }
-        public int GetRobotId()
+        public int GetId()
         {
             return this._id;
         }

@@ -9,11 +9,11 @@ namespace Robot_Challenge
     {
         public const int TABLE_LOWER_LIMIT = 0;
         public const int TABLE_UPPER_LIMIT = 4;
-        //public static readonly string[] DIRECTION = { "NORTH", "EAST", "SOUTH", "WEST" };
 
         public Robot activeRobot;
-        public char[] delimiterChars = { ' ', ',', '\t' }; // Used for split commands
         List<Robot> robots = new List<Robot>();
+
+        public char[] delimiterChars = { ' ', ',', '\t' }; // Used for split commands
 
         static void Main(string[] args)
         {
@@ -74,7 +74,7 @@ namespace Robot_Challenge
                 Console.WriteLine("X Y values must be number between 0 and 4...");
                 return;
             }
-            /* Check facing argument */
+            /* Check direction argument */
             else if (placeArgs[3]!="NORTH" && placeArgs[3]!="EAST" && placeArgs[3]!="SOUTH" && placeArgs[3]!="WEST")
             {
                 Console.WriteLine("Facing must be one of \"NORTH\", \"EAST\", \"SOUTH\", or \"WEST\".");
@@ -85,19 +85,19 @@ namespace Robot_Challenge
              */
             if (robots.Count == 0)
             {
-                robots.Add(new Robot(userInputX, userInputY, placeArgs[3], robots.Count, true));
-                activeRobot = robots[0];
+                robots.Add(new Robot(userInputX, userInputY, placeArgs[3], robots.Count, true));    // use robots.Count as robot id
+                activeRobot = robots[0];    // Set first added robot to active.
             }
             else
             {
-                robots.Add(new Robot(userInputX, userInputY, placeArgs[3], robots.Count, false));
+                robots.Add(new Robot(userInputX, userInputY, placeArgs[3], robots.Count, false));   // use robots.Count as robot id
             }
         }
 
         /// <summary>
         /// Print information of how many robots on the table,
         /// current active robot,
-        /// and it's position and facing.
+        /// and its position and direction.
         /// </summary>
         public void ReportRobotStatus()
         {
@@ -109,29 +109,29 @@ namespace Robot_Challenge
             }
             else
             {
-                string strFacing;   // Store the stringified facing value
-                // Convert robot's _facing to string
-                switch (activeRobot.GetRobotDirection())
+                string strDirection;   // Store the stringified facing value
+                // Convert robot's direction to string
+                switch (activeRobot.GetDirection())
                 {
                     case 0:
-                        strFacing = "NORTH";
+                        strDirection = "NORTH";
                         break;
                     case 1:
-                        strFacing = "EAST";
+                        strDirection = "EAST";
                         break;
                     case 2:
-                        strFacing = "SOUTH";
+                        strDirection = "SOUTH";
                         break;
                     case 3:
-                        strFacing = "WEST";
+                        strDirection = "WEST";
                         break;
                     default:
-                        strFacing = "UNKNOWN";
+                        strDirection = "UNKNOWN";
                         break;
                 }
                 // Because robot's id starts from 0, needs to +1 when print output
-                Console.WriteLine($"There are {robots.Count} robots on the table. Active robot is Robot {activeRobot.GetRobotId()+1}."); 
-                Console.WriteLine($"It's position is {activeRobot.GetRobotXPos()}, {activeRobot.GetRobotYPos()}, facing {strFacing}");
+                Console.WriteLine($"There are {robots.Count} robots on the table. Active robot is Robot {activeRobot.GetId()+1}."); 
+                Console.WriteLine($"It's position is {activeRobot.GetXPos()}, {activeRobot.GetYPos()}, facing {strDirection}");
             }
         }
 
@@ -141,10 +141,10 @@ namespace Robot_Challenge
         /// <returns></returns>
         public bool IsValidMove()
         {
-            int facing = activeRobot.GetRobotDirection();
-            int xPosition = activeRobot.GetRobotXPos();
-            int yPosition = activeRobot.GetRobotYPos();
-            switch (facing)
+            int direction = activeRobot.GetDirection();
+            int xPosition = activeRobot.GetXPos();
+            int yPosition = activeRobot.GetYPos();
+            switch (direction)
             {
                 case 0 when yPosition == TABLE_UPPER_LIMIT:
                     return false;
@@ -160,9 +160,7 @@ namespace Robot_Challenge
         }
 
         /// <summary>
-        /// Move the robot.
-        /// Prevent the robot from falling off the table by 
-        /// checking whether the robot is valid to move at first.
+        /// Move the robot if movement is valid
         /// </summary>
         public void SetRobotMovement()
         {
@@ -179,7 +177,6 @@ namespace Robot_Challenge
 
         /// <summary>
         /// Rotate robot.
-        /// Check whether there is any robot on the table at first.
         /// </summary>
         /// <param name="direction"></param>
         public void SetRobotDirection(string direction)
@@ -223,7 +220,7 @@ namespace Robot_Challenge
         }
         #endregion
 
-        public void Helper()
+        public void ShowHelp()
         {
             Console.WriteLine("Place a robot:\tPLACE X,Y,FACING");
             Console.WriteLine("Get report:\tREPORT");
@@ -257,7 +254,7 @@ namespace Robot_Challenge
                         SelectRobot(tokens);
                         break;
                     case "HELP":
-                        Helper();
+                        ShowHelp();
                         break;
                     default:
                         Console.WriteLine("Invalid command...");
