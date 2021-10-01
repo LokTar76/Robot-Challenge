@@ -222,9 +222,18 @@ namespace Robot_Challenge
      
         }
         #endregion
+
+        public void Helper()
+        {
+            Console.WriteLine("Place a robot:\tPLACE X,Y,FACING");
+            Console.WriteLine("Get report:\tREPORT");
+            Console.WriteLine("Move robot:\tMOVE");
+            Console.WriteLine("Rotate robot:\tLEFT  RIGHT");
+            Console.WriteLine("Select robot:\tROBOT <robot id>");
+        }
         public void UseCmdInput()
         {
-            Console.WriteLine("Please enter x y position and facing of the robot, type ('q' or 'Q') to quit: ");
+            Console.WriteLine("Please enter x y position and facing of the robot,\n type 'HELP' to list all commands,\n type ('q' or 'Q') to quit: ");
             string[] tokens = Console.ReadLine().Split(delimiterChars);
             
             while (tokens[0] != "q" && tokens[0] != "Q")
@@ -246,6 +255,9 @@ namespace Robot_Challenge
                         break;
                     case "ROBOT":
                         SelectRobot(tokens);
+                        break;
+                    case "HELP":
+                        Helper();
                         break;
                     default:
                         Console.WriteLine("Invalid command...");
