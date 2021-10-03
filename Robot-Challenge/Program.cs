@@ -45,7 +45,7 @@ namespace Robot_Challenge
         /// <summary>
         /// Place a new robot on the table.
         /// Check inputs, if invalid print error message,
-        /// if valid create a new Robot instance and set it's property
+        /// if valid create a new Robot instance and set its property
         /// according to parameter.
         /// </summary>
         /// <param name="placeArgs"></param>
@@ -195,6 +195,11 @@ namespace Robot_Challenge
         /// <param name="selectArgs"></param>
         public void SelectRobot(string[] selectArgs)
         {
+            if (selectArgs.Count() != 2)
+            {
+                Console.WriteLine("Invalid number of arguments.");
+                return;
+            }
             int selectedRobotId;
             bool isValidRobotId = int.TryParse(selectArgs[1], out selectedRobotId);
 
